@@ -53,7 +53,7 @@ comp_Char,player_Char = characterChoice() # initial selection of characters
 if comp_Char=="X":
     move = True #move as true will indicate its computers move 
 else :
-    move = False #move as false will indicate its computers move
+    move = False #move as false will indicate its Players move
 currentBoard=[0,' ',' ',' ',' ',' ',' ',' ',' ',' ']
 filledSpots=[0]
 while(len(filledSpots) <= 9 and  not decision(currentBoard)):
