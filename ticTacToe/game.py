@@ -48,30 +48,49 @@ def decision(currentBoard):
     (currentBoard[7]==currentBoard[5] and currentBoard[7]==currentBoard[3] and currentBoard[5]!=" ")or
     (currentBoard[1]==currentBoard[5] and currentBoard[9]==currentBoard[1] and currentBoard[5]!=" "))
 
-#drawBoard([0,"X","O","X","O","X","O","X","X","X"]) # to check functioning of drawBoard
-comp_Char,player_Char = characterChoice() # initial selection of characters
-if comp_Char=="X":
-    move = True #move as true will indicate its computers move 
-else :
-    move = False #move as false will indicate its Players move
-currentBoard=[0,' ',' ',' ',' ',' ',' ',' ',' ',' ']
-filledSpots=[0]
-while(len(filledSpots) <= 10 and  not decision(currentBoard)):
-    if(move):
-        comp_Move=compMove(filledSpots)
-        currentBoard = updateBoardStatus(comp_Move,comp_Char,currentBoard)
-        filledSpots = recordFilledSpots(filledSpots,comp_Move)
-        move = False #switch to Playermove
+
+goAgain = True
+results={'comp':0,'player':0,'tie':0}
+while goAgain:
+    comp_Char,player_Char = characterChoice() # initial selection of characters
+    if comp_Char=="X":
+        move = True #move as true will indicate its computers move 
     else :
-        player_Move=playerMove(filledSpots)
-        currentBoard = updateBoardStatus(player_Move,player_Char,currentBoard)
-        filledSpots = recordFilledSpots(filledSpots,player_Move)
-        move = True #switch to compMove
-    drawBoard(currentBoard)
-if len(filledSpots)==9:
-    print("Match ended in Tie")
-elif (not move):
-    print("Match ended with Computers win")
-else :
-    print("Congrats Man. You won")
+        move = False #move as false will indicate its Players move
+    currentBoard=[0,' ',' ',' ',' ',' ',' ',' ',' ',' ']
+    filledSpots=[0]
+    while(len(filledSpots) <= 9 and  not decision(currentBoard)):
+        if(move):
+            comp_Move=compMove(filledSpots)
+            currentBoard = updateBoardStatus(comp_Move,comp_Char,currentBoard)
+            filledSpots = recordFilledSpots(filledSpots,comp_Move)
+            move = False #switch to Playermove
+        else :
+            player_Move=playerMove(filledSpots)
+            currentBoard = updateBoardStatus(player_Move,player_Char,currentBoard)
+            filledSpots = recordFilledSpots(filledSpots,player_Move)
+            move = True #switch to compMove
+        drawBoard(currentBoard)
+    if (not move):
+        print("Match ended with Computers win")
+        results['comp']=results['comp']+1
+    elif(move) :
+        print("Congrats Man. You won")
+        results['player']=results['player']+1
+    else:
+        print("Match ended in Tie")
+        results['tie'] = results['tie']+1
+    print('Wanna go Again? (Y/N)')
+    playAgain = 'X'
+    while (playAgain!='Y' and playAgain!='N'):
+        playAgain=input().upper()
+        print(f'You entered {playAgain}')
+    if playAgain=="N":
+        goAgain= False
+totalGamesPlayed = results['comp'] + results['player'] + results['tie']
+compWin = (results['comp'] / totalGamesPlayed) *100
+playerWin = (results['player'] / totalGamesPlayed) *100
+print(f'Total Games Played : {totalGamesPlayed} \nComp wins : {compWin} times\nPlayer Wins : {playerWin} times')
+
+        
 
