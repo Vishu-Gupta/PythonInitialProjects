@@ -38,7 +38,7 @@ def characterChoice():
         print("Player will play X, Computer O ")
         return compChar, "X"
 
-def decision(currentBoard):
+def decision(currentBoard): # returns True in case game has been won by any party
     return ((currentBoard[7]==currentBoard[8] and currentBoard[9]==currentBoard[8] and currentBoard[8]!=" ")or
     (currentBoard[4]==currentBoard[5] and currentBoard[6]==currentBoard[5] and currentBoard[5]!=" ")or
     (currentBoard[1]==currentBoard[2] and currentBoard[3]==currentBoard[1] and currentBoard[1]!=" ")or
@@ -59,7 +59,8 @@ while goAgain:
         move = False #move as false will indicate its Players move
     currentBoard=[0,' ',' ',' ',' ',' ',' ',' ',' ',' ']
     filledSpots=[0]
-    while(len(filledSpots) <= 9 and  not decision(currentBoard)):
+    continueGame = True
+    while continueGame:
         if(move):
             comp_Move=compMove(filledSpots)
             currentBoard = updateBoardStatus(comp_Move,comp_Char,currentBoard)
@@ -71,15 +72,18 @@ while goAgain:
             filledSpots = recordFilledSpots(filledSpots,player_Move)
             move = True #switch to compMove
         drawBoard(currentBoard)
-    if (not move):
-        print("Match ended with Computers win")
-        results['comp']=results['comp']+1
-    elif(move) :
-        print("Congrats Man. You won")
-        results['player']=results['player']+1
-    else:
-        print("Match ended in Tie")
-        results['tie'] = results['tie']+1
+        if decision(currentBoard):
+            if(not move):
+                print("Match ended with Computers win")
+                results['comp']=results['comp']+1
+            else:
+                print("Congrats Man. You won")
+                results['player']=results['player']+1
+            continueGame = False
+        elif (len(filledSpots)== 10):
+            print("Match ended in Tie")
+            results['tie'] = results['tie']+1
+            continueGame = False
     print('Wanna go Again? (Y/N)')
     playAgain = 'X'
     while (playAgain!='Y' and playAgain!='N'):
@@ -90,7 +94,8 @@ while goAgain:
 totalGamesPlayed = results['comp'] + results['player'] + results['tie']
 compWin = (results['comp'] / totalGamesPlayed) *100
 playerWin = (results['player'] / totalGamesPlayed) *100
-print(f'Total Games Played : {totalGamesPlayed} \nComp wins : {compWin} times\nPlayer Wins : {playerWin} times')
+tieRate = (results['tie'] / totalGamesPlayed) *100
+print(f'Total Games Played : {totalGamesPlayed} \nComp winrate : {compWin:0.2f} %\nPlayer Winrate : {playerWin:0.2f} %\nTie Rate :{tieRate:0.2f} %')
 
         
 
