@@ -56,7 +56,7 @@ else :
     move = False #move as false will indicate its Players move
 currentBoard=[0,' ',' ',' ',' ',' ',' ',' ',' ',' ']
 filledSpots=[0]
-while(len(filledSpots) <= 9 and  not decision(currentBoard)):
+while(len(filledSpots) <= 10 and  not decision(currentBoard)):
     if(move):
         comp_Move=compMove(filledSpots)
         currentBoard = updateBoardStatus(comp_Move,comp_Char,currentBoard)
