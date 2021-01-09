@@ -1,5 +1,5 @@
 import random
-# spots of board considered same as numpad
+# spots of board considered same as numpad 
 def drawBoard(board):
     print(f"{board[7]} | {board[8]} | {board[9]}")
     print("---------")
